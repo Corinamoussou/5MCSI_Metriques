@@ -5,7 +5,11 @@ from datetime import datetime
 from urllib.request import urlopen
 import sqlite3
                                                                                                                                        
-app = Flask(__name__)      
+app = Flask(__name__)     
+
+@app.route("/histogramme1/")
+def mongraphique3():
+    return render_template("histogramme1.html")
 
 @app.route('/meteo/')
 def meteo1():
