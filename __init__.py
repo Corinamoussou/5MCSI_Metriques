@@ -9,10 +9,16 @@ app = Flask(__name__)
 
 @app.route('/commits/')
 def commits():
-    # Remplacez par l'URL de l'API GitHub correspondant à votre repository
-    url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
-    response = requests.get(url)
-    commits_data = response.json()
+    # Configuration pour GitHub API
+    conn = http.client.HTTPSConnection("api.github.com")
+    headers = { 'User-Agent': 'MyApp' }
+
+    # Remplacez '<your-username>' et '<your-repo>' par vos informations
+    conn.request("GET", "/repos/<corinamoussou>/<5MCSI_Metriques>/commits", headers=headers)
+
+    response = conn.getresponse()
+    raw_data = response.read()
+    commits_data = json.loads(raw_data.decode("utf-8"))
 
     # Préparer les données pour l'histogramme
     commit_counts = {}
@@ -27,7 +33,7 @@ def commits():
         data_for_chart.append([minute, count])
 
     # Vous devez créer un template HTML pour afficher les données
-    return render_template('commits.html', data_for_chart=data_for_chart)
+    return render_template('commits_histogram.html', data_for_chart=data_for_chart)
 
 @app.route("/histogramme/")
 def mongraphique2():
