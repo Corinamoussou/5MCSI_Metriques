@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/commits/')
 def commits():
     # Remplacez par l'URL de l'API GitHub correspondant à votre repository
-    url = 'https://api.github.com/repos/<your-username>/<your-repo>/commits'
+    url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
     response = requests.get(url)
     commits_data = response.json()
 
