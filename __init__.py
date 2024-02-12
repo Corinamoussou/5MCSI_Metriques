@@ -27,7 +27,7 @@ def commits():
         data_for_chart.append([minute, count])
 
     # Vous devez créer un template HTML pour afficher les données
-    return render_template('commits_histogram.html', data_for_chart=data_for_chart)
+    return render_template('commits.html', data_for_chart=data_for_chart)
 
 @app.route("/histogramme/")
 def mongraphique2():
