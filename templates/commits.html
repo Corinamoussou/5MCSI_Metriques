@@ -1,35 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Commits Graphique</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Commits Histogram</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-      google.charts.load('current', {packages: ['corechart', 'bar']});
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable({{ data_for_chart | safe }});
+        var data = google.visualization.arrayToDataTable({{ data_for_chart | tojson | safe }});
 
         var options = {
-          chart: {
-            title: 'Nombre de Commits par Minute',
-          },
-          hAxis: {
-            title: 'Minute',
-          },
-          vAxis: {
-            title: 'Nombre de Commits',
-          }
+          title: 'Nombre de Commits par Minute',
+          legend: { position: 'none' },
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
-  </head>
-  <body>
-    <div id="chart_div" style="width: 800px; height: 600px;"></div>
-  </body>
+</head>
+<body>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
 </html>
 
