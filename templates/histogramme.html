@@ -2,47 +2,47 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Températures à Tawarano</title>
+    <title>Métrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-      google.charts.load('current', { packages: ['corechart'] });
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Date');
-        data.addColumn('number', 'Température');
-
-        // Données de température
-        var temperatureData = [
-          {"dt":1485799200,"main":{"temp":283.76}},
-          {"dt":1485810000,"main":{"temp":282.56}},
-          {"dt":1485820800,"main":{"temp":282.3}},
-          // Ajoutez ici d'autres données de température
-        ];
-
-        // Convertir chaque entrée en une ligne dans le tableau de données
-        temperatureData.forEach(function(entry) {
-          var date = new Date(entry.dt * 1000);
-          var temp = entry.main.temp - 273.15; // Conversion de Kelvin en Celsius
-          data.addRow([date.toLocaleDateString(), temp]);
-        });
-
-        var options = {
-          title: 'Températures à Tawarano',
-          legend: { position: 'none' },
-          histogram: { bucketSize: 2 }, // Ajustez selon le besoin
-          hAxis: { title: 'Température (°C)' },
-          vAxis: { title: 'Fréquence' }
-        };
-
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
   </head>
   <body>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+
+      function drawBackgroundColor() {
+        function drawChart(data) {
+          // Convertir les données récupérées en un tableau utilisable par Google Charts
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Date');
+          dataTable.addColumn('number', 'Température');
+
+          data.results.forEach(entry => {
+            var date = new Date(entry.Jour * 1000);
+            dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+          });
+
+          // Configurer les options de l'histogramme
+          var options = {
+            title: 'Évolution des températures de Paris pour les 16 prochains jours',
+            legend: { position: 'none' },
+            histogram: { bucketSize: 2 } // Ajustez cette valeur si nécessaire
+          };
+
+          var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+          chart.draw(dataTable, options);
+        }
+
+        // Exemple de récupération de données (assurez-vous que l'URL est correcte et accessible)
+        fetch('/paris/')
+          .then(response => response.json())
+          .then(data => {
+            drawChart(data);
+          });
+      }
+    </script>
   </body>
 </html>
+
 
